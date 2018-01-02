@@ -11,7 +11,7 @@ import java.net.*;
 import java.util.*;
 import org.json.*;
 
-public class TestRestJson {
+public class ReadJSON {
 	public static String scanFileContentsString = null;
 	public static String myDelim = "\\Z";
 	public static String myJsonFileName = "C:\\jasondata2.json";
