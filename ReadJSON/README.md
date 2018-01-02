@@ -4,9 +4,9 @@ Programmer/Author:  Nancy Schorr
 
 
 
-Date: July 23, 2016 
+Date: July 23, 2016 / 2018
 
-This program parses JSONinput from either a file or a url. It showcases the use of REST apis to a read data and store it as a JSON object, JSON array and other Java objects for further manipulation.
+This program parses JSONinput from either a file or a url. It reads data and stores it as a JSON object, JSON array and other Java objects for further manipulation.
 
 It uses the example website: http://jsonplaceholder.typicode.com/albums and reads the data.
 
