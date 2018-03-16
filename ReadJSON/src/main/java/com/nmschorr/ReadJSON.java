@@ -15,47 +15,32 @@ public class ReadJSON {
 	public static String scanFileContentsString = null;
 	public static String myDelim = "\\Z";
 	public static String myJsonFileName = "C:\\jsondata2.json";
+	protected	 static String  builderLine;
 	static Exception e;
+	final protected static String locUrlString = "http://jsonplaceholder.typicode.com/albums";
+	final static StringBuilder myStrBuilder = new StringBuilder();
+	final public static List<Object> myList = new ArrayList<Object>();
+
+	static String  locString = new String("");  // new empty string
 
 	public static void main(String[] args) throws Exception {
 		System.setProperty("http.agent", "Chrome");
 		System.out.println("Beginning...");
 		//readUrlData();  // reads json data from a url http page
-		ReadJSON.readFile(ReadJSON.myJsonFileName);  // read json data from a file
+		try {    	ReadJSON.readJson(ReadJSON.readScanFile(myJsonFileName));  } catch(final Exception e) { e.printStackTrace(); }
 		System.out.println("\nProgram Finished");
 	}
 
 	static void readUrlData () throws Exception {
-		String builderLine;
-		System.out.println("\nRunning readUrlData");
-		final String locUrlString = "http://jsonplaceholder.typicode.com/albums";
 		final Reader bufReader = new BufferedReader(
-				new InputStreamReader(new URL(locUrlString).openStream()));	
-		final StringBuilder myStrBuilder = new StringBuilder();
+		    new InputStreamReader(new URL(locUrlString).openStream()));	
 		while((builderLine = ((BufferedReader)bufReader).readLine()) != null) {
 			myStrBuilder.append(builderLine);
 		}
-		System.out.println("\\n" + myStrBuilder.toString());		
-		System.out.println("\nDone with readUrlData ");
 	}
 
-	static void readFile(String fname) {
-		System.out.println("Running readFile. " + " name of file " + fname);
-		final StringBuilder strBuilder = new StringBuilder();
-		try {
-			ReadJSON.scanFileContentsString = ReadJSON.readScanFile(fname);  // read from file
-			System.out.println("scanFileContentsString: " + ReadJSON.scanFileContentsString);
-			ReadJSON.readJson(ReadJSON.scanFileContentsString); 
-			System.out.println("in readFile: working on this: " + strBuilder.toString());
-			//System.out.println( "" );  // placeholder for debugger
-		} catch(final Exception e) { e.printStackTrace();
-		}
-	}
-
-	// This method just plays around with converting JSON objects: use debugger to see them
-	// List<Object> myArrayList = new ArrayList<Object>();
-	// HashMap<String, String> map = new HashMap<String, String>();  // shows casting of Object to HashMap
-	// Map<String,String> mapsObj = new HashMap<String,String>();	
+	// This method plays with converting JSON objects: use debugger to see them List<Object> myArrayList = new ArrayList<Object>();
+	// HashMap<String, String> map = new HashMap<String, String>();  // shows casting of Object to HashMap Map<String,String> mapsObj = new HashMap<String,String>();	
 
 	static void readJson(String long1string) throws Exception {
 
@@ -92,10 +77,8 @@ public class ReadJSON {
 	}
 
 	public static String readScanFile(String filename) throws FileNotFoundException {
-		final Scanner myScanner;
-		String locString = new String("");  // new empty string
-		final File myFile = new File(filename);
-		myScanner = new Scanner(myFile);
+		//  File myFile=new File(builderLine);
+		   Scanner 	myScanner = new Scanner(new File(builderLine));
 		locString = myScanner.useDelimiter(ReadJSON.myDelim).next();
 		myScanner.close();			
 		return locString;
@@ -103,10 +86,10 @@ public class ReadJSON {
 
 	// for this and toList below: thanks to: http://stackoverflow.com/questions/21720759/convert-a-json-string-to-a-hashmap
 	public static Map<String, Object> toMap(JSONObject object) throws JSONException {
-		final Map<String, Object> myMap = new HashMap<String, Object>();
-		final Iterator<String> keysItr = object.keys();
+		 Map<String, Object> myMap = new HashMap<String, Object>();
+		 Iterator<String> keysItr = object.keys();
 		while (keysItr.hasNext()) {
-			final String myKey = keysItr.next();
+			 String myKey = keysItr.next();
 			Object myVal = object.get(myKey);
 
 			if (myVal instanceof JSONArray) {
@@ -121,18 +104,16 @@ public class ReadJSON {
 	}
 
 	public static List<Object> myToList(JSONArray myJArray) throws JSONException {
-		final List<Object> myList = new ArrayList<Object>();
+		Object myObject= null;
 		for(int i = 0; i < myJArray.length(); i++) {
-			Object myObject= myJArray.get(i);
+			 myObject= myJArray.get(i);
 			if (myObject instanceof JSONArray) {
 				myObject = ReadJSON.myToList((JSONArray) myObject);
 			}
 			else if (myObject instanceof JSONObject) {
 				myObject = ReadJSON.toMap((JSONObject) myObject);
-			}
-			myList.add(myObject);
-		}
-		return myList;
+			} myList.add(myObject);
+		} 	return myList;
 	}
 }	//class
 
