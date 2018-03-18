@@ -26,17 +26,19 @@ public class ReadJSONutils {
 		for (int count = 0; count < arrOfHshMp.size(); count++)  {
 			HashMap<String,String> hMap = arrOfHshMp.get(count);
 			JSONObject newJObj = new JSONObject(hMap);
+			JSONObject newJObj2 = new JSONObject(hMap);
+			newJObj.similar(newJObj2);
 			newJArry.put(newJObj);
 		} 	return newJArry;
 	}
 
 	public static String readScanFile(String filename) throws FileNotFoundException {
-		out.println ("in readScanFile");
+		out.println ("In readScanFile");
 		String myDelim = "\\Z";
 		Scanner myScanner = new Scanner(new File(filename));
 		String locString =new String( myScanner.useDelimiter(myDelim).next() );
 		myScanner.close();			
-		out.println ("in readScanFile. returning string: " + locString);
+		out.println ("In readScanFile. \nReturning string: " + locString);
 		return locString;
 	}  //myScanner()
 
@@ -86,7 +88,7 @@ public class ReadJSONutils {
 	// HashMap<String, String> map = new HashMap<String, String>();  //cast of Object to HashMap Map<String,String> mapsObj = new HashMap<String,String>();	
 	static  JSONArray jsnArrOfHMapsFstr(String fileContents) throws Exception {
 		JSONArray filecontentsAsJSONArray = new JSONArray(fileContents); 
-		System.out.println("\n inside jsnArrOfHMapsFstr. returning: " +filecontentsAsJSONArray.toString() );
+		System.out.println("\n inside jsnArrOfHMapsFstr.  returning: " +filecontentsAsJSONArray.toString() );
 		return filecontentsAsJSONArray;
 	}
 }
