@@ -26,11 +26,11 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 public class ReadJSON {
-	final String myJsonFileName, locUrlString;
+	final String  locUrlString;
+	final String myJsonFileName =  "C:\\jsondata2.json";
 
 	public ReadJSON() {
 		System.setProperty("http.agent", "Chrome");
-		myJsonFileName =  "C:\\jsondata2.json";
 		locUrlString = "http://jsonplaceholder.typicode.com/albums";
 		System.out.println("Beginning...");
 	}
@@ -38,106 +38,135 @@ public class ReadJSON {
 	public static void main(String[] args) throws Exception {
 		ReadJSON myThis = new ReadJSON();     // constructor, set up strings
 		//readUrlData();  // reads json data from a url http page
-		try {    	
-			String FileAsString =  readScanFile(myThis.myJsonFileName); 
+		String FileAsString =  readScanFile(myThis.myJsonFileName); 
+		JSONArray filecontentsAsJSONArrayMain = makeJsonObjArrayOfHashmapsFrFileStringContent(FileAsString); 
+		 List<Object> vvv = myReadJsonArrayToObList(filecontentsAsJSONArrayMain);
+//	     JSONArray  jac = new JSONArray();
+//		 for (Object oj: vvv) {
+//			 JSONObject newj = (JSONObject)oj;
+//			 jac.put(newj);
+//		 }
+//		 
+//		 JSONObject jjjj = (JSONObject)vvv;
+		//Map aMap = myJsonObjToMapCol(jac);
 
-			JSONArray filecontentsAsJSONArrayMain = makeJsonArrayReallyHashmapsFrFileStringContent(FileAsString); 
-			// turn array into objects, hashmap set
-
-
-		} catch(  Exception e) { e.printStackTrace(); }
+		
+		
 		System.out.println("\nProgram Finished");
 	}
 
-	// This method plays with converting JSON objects: use debugger to see them List<Object> myArrayList = new ArrayList<Object>();
-	// HashMap<String, String> map = new HashMap<String, String>();  // shows casting of Object to HashMap Map<String,String> mapsObj = new HashMap<String,String>();	
-
-	static  JSONArray makeJsonArrayReallyHashmapsFrFileStringContent(String fileContents) throws Exception {
+							// HashMap<String, String> map = new HashMap<String, String>();  //cast of Object to HashMap Map<String,String> mapsObj = new HashMap<String,String>();	
+	static  JSONArray makeJsonObjArrayOfHashmapsFrFileStringContent(String fileContents) throws Exception {
 		JSONArray filecontentsAsJSONArray = new JSONArray(fileContents); 
 		System.out.println("\n inside makeJsonArrayFromFileStringContent. returning: " +filecontentsAsJSONArray.toString() );
-	    return filecontentsAsJSONArray;
+		return filecontentsAsJSONArray;
 	}	    
 
-	static void chgToHashMapSET(ArrayList<Object> locArryList ) throws Exception {
-		Collection<Map<String,String>> myMapsHashSet = new HashSet<Map<String,String>>();	
-		for (int i=0; i < locArryList.size(); i++) {
-			Object myLocObject = locArryList.get(i);
-			HashMap<String,Object> hm = chgToHashMap(myLocObject);
-			HashMap<Object,Object> hm2;
-			//myMapsHashSet.add((HashMap<Object,Object>)hm);
+
+	static Collection chgToHashMapSet(JSONObject locObj ) throws Exception {
+		HashMap<String, Object> locHashMap= new HashMap<String, Object>();
+		JSONArray myJsonArry2 = new JSONArray(); 
+		List<Object> objList = myReadJsonArrayToObList(myJsonArry2);
+		List<Object> myArrayList3= new ArrayList<Object>(objList);
+		Collection<Map<String,String>> mapsCol = new HashSet<Map<String,String>>();	
+
+		for (int i=0; i < myArrayList3.size(); i++) {
+			mapsCol.add((HashMap<String, String>)myArrayList3.get(i));
 		}
-		System.out.println("\n inside chgToHashMapSET. returning: " + "nothing" );
+		return mapsCol;
 	}
 
-	static HashMap chgToHashMap(Object locObj ) throws Exception {
-		HashMap<String, String> locHashMap= ((HashMap<String, String>)locObj);
-		return locHashMap;
+	JSONObject fetchOneJsonToedit(ArrayList<JSONObject> json2arr, int whichone ) {
+		return   json2arr.get(whichone) ;      //     .optJSONObject(arrLocCtr);
 	}
-
-
-
-void fetchOneJsonToedit(ArrayList<JSONObject> json2arr ) {
-     for ( int arrLocCtr = 0; arrLocCtr < json2arr.size()    ; arrLocCtr++) { 
-	         JSONObject myJsonObj = json2arr.get(arrLocCtr) ;      //     .optJSONObject(arrLocCtr);
-	 		 Iterator<JSONObject> myJsonItr = json2arr.iterator();
-     
-	 while(myJsonItr.hasNext()) {
-	      Object myObj = myJsonItr.next();
-	      System.out.println("myJsonArry element obj" + myObj + " \n\n");
-	 }
-     }
-     
-     for(int i=0; i<json2arr.size(); i++){
-           json2arr.get(i) ;         
-     }
-     }
-
-	//void newFunction() {
-	//		for ( int arrLocCtr = 0; arrLocCtr < json2arr.length(); arrLocCtr++) { 
-	//		//	 JSONObject myJsonObj = json2arr.optJSONObject(arrLocCtr);
-	//			 Iterator<Object> myJsonItr = json2arr.iterator();
-	//
-	//			while(myJsonItr.hasNext()) {
-	//			    Object myObj = myJsonItr.next();
-	//				System.out.println("myJsonArry element obj" + myObj + " \n\n");
-	//
-	//				for(int i=0; i<json2arr.length(); i++){
-	//					json2arr.getJSONObject(i);
-	//				}}}
-	//}
 
 
 	// for this and toList below: thanks to: http://stackoverflow.com/questions/21720759/convert-a-json-string-to-a-hashmap
 
 	//----------------------------------------------------------------------------------------------------
-	public static Map<String, Object> myJsonObjToMap(JSONObject locPassInObj) throws JSONException {
-		Map<String, Object> myMap = new HashMap<String, Object>();
-		Iterator<String> keysItr = locPassInObj.keys();
-		while (keysItr.hasNext()) {
-			String myKey = keysItr.next();
-			Object myVal = locPassInObj.get( keysItr.next() );
-			myVal = myJsonObjToMap((JSONObject) myVal);
-			myMap.put(myKey, myVal);
-		}
-		return myMap;
-	}
+	public static  Map<String,Object> myJsonObjToMapCol(JSONObject  jobject) throws JSONException {
+		Map<String,Object> maps = new  HashMap<String,Object>();	
+		  Iterator<String> keysItr = jobject.keys();
+		    while(keysItr.hasNext()) {
+		    	 String key = keysItr.next();
+		         Object value = jobject.get(key);
 
+		         if(value instanceof JSONArray) {
+		             value = myReadJsonArrayToObList((JSONArray) value);
+		         }
+
+		         else if(value instanceof JSONObject) {
+		              value =  toMap((JSONObject) value);
+		         }
+		         maps.put(key, value);
+		     }
+		     return maps;
+		 }
+
+		//----------------------------------------------------------------------------------------------------
+//	JSONArray myJsonArry = new JSONArray(longJsonString); 
+//	List<Object> myArrayList = new ArrayList<Object>(toList(myJsonArry));
+//	Collection<Map<String,String>> mapsCol = new HashSet<Map<String,String>>();	
+//	for (int i=0; i < myArrayList.size(); i++) {
+//		mapsCol.add((HashMap<String, String>)myArrayList.get(i));
+
+		
+		
+		public static Map<String, Object>  newThing() {
+	  Map<String, Object> myMap = new HashMap<String, Object>();
+//		//  Iterator<String> keysItr = myMap.
+//		//  while (keysItr.hasNext()) {
+//		//      String myKey = keysItr.next();
+//		//      Object myVal = object.get(myKey);
+//
+//		      if (myVal instanceof JSONArray) {
+//		          myVal = myReadJsonArrayToObList((JSONArray) myVal);
+//		      }
+//		      else if (myVal instanceof JSONObject) {
+//		          myVal = myJsonObjToMap((JSONObject) myVal);
+//		      }
+//		      myMap.put(myKey, myVal);
+		  return myMap;
+		  }
+ 
+	 
+ 
+	 
 
 	public static List<Object> myReadJsonArrayToObList(JSONArray passedInJsonArray) throws JSONException {
-		Object locObject2= null;
-		List<Object> myObjectList = new ArrayList<Object>();
+		List<Object> myList = new ArrayList<Object>();
 		for(int i = 0; i < passedInJsonArray.length(); i++) {
-			Object locJson= passedInJsonArray.get(i);
-			locObject2 = myReadJsonArrayToObList((JSONArray) locJson);
-			myObjectList.add(locObject2);
-		} 	
-		return myObjectList;
+			Object myObject= passedInJsonArray.get(i);
+			if (myObject instanceof JSONArray) {
+				myObject = myReadJsonArrayToObList((JSONArray) myObject);
+			}
+			else if (myObject instanceof JSONObject) {
+			 myObject = toMap((JSONObject) myObject);
+			}
+			myList.add(myObject);
+		}
+		return myList;
 	}
 
+    public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+        Map<String, Object> map = new HashMap<String, Object>();
 
+        Iterator<String> keysItr = object.keySet().iterator();
+        while(keysItr.hasNext()) {
+            String key = keysItr.next();
+            Object value = object.get(key);
 
+            if(value instanceof JSONArray) {
+                value = myReadJsonArrayToObList((JSONArray) value);
+            }
 
-
+            else if(value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            map.put(key, value);
+        }
+        return map;
+    }
 
 
 
@@ -167,11 +196,44 @@ void fetchOneJsonToedit(ArrayList<JSONObject> json2arr ) {
 }	//class
 
 
-
-
-
-
-
-
-
-
+//
+//
+//
+////for this and toList below: thanks to: http://stackoverflow.com/questions/21720759/convert-a-json-string-to-a-hashmap
+//public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+//    Map<String, Object> myMap = new HashMap<String, Object>();
+//    Iterator<String> keysItr = object.keys();
+//    while (keysItr.hasNext()) {
+//        String myKey = keysItr.next();
+//        Object myVal = object.get(myKey);
+//
+//        if (myVal instanceof JSONArray) {
+//            myVal = toList((JSONArray) myVal);
+//        }
+//        else if (myVal instanceof JSONObject) {
+//            myVal = toMap((JSONObject) myVal);
+//        }
+//        myMap.put(myKey, myVal);
+//    }
+//    return myMap;
+//}
+//
+//public static List<Object> toList(JSONArray myJArray) throws JSONException {
+//    List<Object> myList = new ArrayList<Object>();
+//    for(int i = 0; i < myJArray.length(); i++) {
+//        Object myObject= myJArray.get(i);
+//        if (myObject instanceof JSONArray) {
+//            myObject = toList((JSONArray) myObject);
+//        }
+//        else if (myObject instanceof JSONObject) {
+//            myObject = toMap((JSONObject) myObject);
+//        }
+//        myList.add(myObject);
+//    }
+//    return myList;
+//}
+//}   //class
+//
+//
+//
+//
