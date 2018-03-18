@@ -28,11 +28,13 @@ public class ReadJSONutils {
 		JSONArray newJArry = new JSONArray();
 		for (int count = 0; count < arrOfHshMp.size(); count++)  {
 			HashMap<String,String> hMap = arrOfHshMp.get(count);
-			 JSONObject newJObj = new JSONObject(hMap);
-			 newJArry.put(newJObj);
+			JSONObject newJObj = new JSONObject(hMap);
+			newJArry.put(newJObj);
 		}
 		return newJArry;
 	}
+
+
 	public static String readScanFile(String filename) throws FileNotFoundException {
 		out.println ("in readScanFile");
 		String myDelim = "\\Z";
@@ -45,6 +47,8 @@ public class ReadJSONutils {
 		return locString;
 	}  //myScanner()
 
+
+
 	public StringBuilder readUrlData(String locUrlString) throws Exception {
 		String builderLine;
 		StringBuilder myStrBuilder = new StringBuilder();
@@ -53,9 +57,9 @@ public class ReadJSONutils {
 		while((builderLine = ((BufferedReader)bufReader).readLine()) != null) {
 			myStrBuilder.append(builderLine);
 		}
-	return myStrBuilder;	
+		return myStrBuilder;	
 	}
 
-	 	}
+}
 
- 
+
