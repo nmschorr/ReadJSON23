@@ -33,8 +33,10 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20151123</version>
+			<version>20160810</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.android.support/appcompat-v7 -->
+
 	</dependencies>
 
 	<build>
