@@ -2,7 +2,6 @@ package com.nmschorr;
 
 
 import static java.lang.System.out;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,10 +17,9 @@ import java.util.Collection;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-
 public class ReadJSONutils {
 
-	public static JSONArray toJsnArrOfObjs(ArrayList<HashMap<String,String>> arrOfHshMp)  throws Exception {
+	public static JSONArray arrList_fHash(ArrayList<HashMap<String,String>> arrOfHshMp)  throws Exception {
 		JSONArray newJArry = new JSONArray();
 		for (int count = 0; count < arrOfHshMp.size(); count++)  {
 			HashMap<String,String> hMap = arrOfHshMp.get(count);
@@ -33,15 +31,14 @@ public class ReadJSONutils {
 	}
 
 	public static String readScanFile(String filename) throws FileNotFoundException {
-		out.println ("In readScanFile");
+		out.println ("Beginning readScanFile.");
 		String myDelim = "\\Z";
 		Scanner myScanner = new Scanner(new File(filename));
 		String locString =new String( myScanner.useDelimiter(myDelim).next() );
 		myScanner.close();			
-		out.println ("In readScanFile. \nReturning string: " + locString);
+		out.println ("In readScanFile: \nReturning string: " + locString);
 		return locString;
 	}  //myScanner()
-
 
 	public static StringBuilder readUrlData(String locUrlString) throws Exception {
 		String builderLine;
@@ -63,7 +60,7 @@ public class ReadJSONutils {
 		out.println( "is there a " + fieldToRem + " key now? : " + incomingHM.containsKey(fieldToRem) );
 		return incomingHM;
 	}
-	public static ArrayList <HashMap<String,String>> remLinesFromMap(ArrayList<Object> inArrListObs) {
+	public static ArrayList <HashMap<String,String>> chgStructToArrListHashMp(ArrayList<Object> inArrListObs) {
 		ArrayList <HashMap<String,String>> newestArrayOfHashMap = new ArrayList <HashMap<String,String>>();
 		String fieldToRemove = "website";
 		HashMap <String, String> convertedHM = null;
@@ -86,7 +83,7 @@ public class ReadJSONutils {
 	}		 
 
 	// HashMap<String, String> map = new HashMap<String, String>();  //cast of Object to HashMap Map<String,String> mapsObj = new HashMap<String,String>();	
-	static  JSONArray jsnArrOfHMapsFstr(String fileContents) throws Exception {
+	static  JSONArray jsonArrOfHash_FFileStr(String fileContents) throws Exception {
 		JSONArray filecontentsAsJSONArray = new JSONArray(fileContents); 
 		System.out.println("\n inside jsnArrOfHMapsFstr.  returning: " +filecontentsAsJSONArray.toString() );
 		return filecontentsAsJSONArray;
